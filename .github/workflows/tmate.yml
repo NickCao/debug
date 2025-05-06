@@ -1,0 +1,9 @@
+name: tmate
+on: [push]
+jobs:
+  tmate:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
