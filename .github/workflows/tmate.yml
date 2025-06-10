@@ -2,7 +2,7 @@ name: tmate
 on: [push]
 jobs:
   tmate:
-    runs-on: macos-13
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - name: Setup tmate session
