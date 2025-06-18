@@ -7,9 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
-        with:
-          activate-environment: true
       - run: |
-        uv pip install --extra-index-url https://pkg.jumpstarter.dev/main/simple jumpstarter-all
-        jmp version
-
+          uv venv
+          uv pip install --extra-index-url https://pkg.jumpstarter.dev/main/simple jumpstarter-all
+          uv run jmp version
