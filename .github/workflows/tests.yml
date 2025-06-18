@@ -10,4 +10,11 @@ jobs:
       - run: |
           uv venv
           uv pip install --extra-index-url https://pkg.jumpstarter.dev/main/simple jumpstarter-all
-          uv run jmp version
+
+          mkdir -p ~/.config/jumpstarter/clients
+          cat <<EOF > ~/.config/jumpstarter/clients/default.yaml
+          ${{ secrets.JUMPSTARTER_CLIENT_CONFIG }}
+          EOF
+          uv run jmp config client use default
+
+          uv run jmp get exporters
