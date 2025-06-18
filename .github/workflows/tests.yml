@@ -17,4 +17,4 @@ jobs:
           EOF
           uv run jmp config client use default
 
-          uv run jmp shell --selector board=virtual -- j
+          uv run jmp shell --selector board=virtual -- pytest
