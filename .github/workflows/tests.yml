@@ -1,0 +1,15 @@
+name: Test RHEL bootc image
+on:
+  push:
+jobs:
+  test-tegra-base-image:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          activate-environment: true
+      - run: |
+        uv pip install --extra-index-url https://pkg.jumpstarter.dev/main/simple jumpstarter-all
+        jmp version
+

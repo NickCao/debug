@@ -1,5 +1,6 @@
 name: tmate
-on: [push]
+on:
+  workflow_dispatch:
 jobs:
   tmate:
     runs-on: ubuntu-24.04-arm
