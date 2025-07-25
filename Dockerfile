@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel9/rhel-bootc:9.4-1730828483
+FROM registry.access.redhat.com/ubi9/ubi:9.4
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN <<EOF
