@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4
+FROM docker.io/rockylinux/rockylinux:9.4
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN <<EOF
