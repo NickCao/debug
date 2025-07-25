@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     container:
       image: registry.access.redhat.com/ubi9/ubi
-      options: --privileged --device /dev/nvme0n1
+      options: --privileged -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - name: Access a subscription via activation key
         run: |
@@ -14,8 +14,7 @@ jobs:
       - name: Install docker
         run: |
           dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
-          dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-          systemctl enable --now docker
+          dnf install -y docker-ce-cli docker-buildx-plugin docker-compose-plugin
       - uses: docker/login-action@v3
         with:
           registry: registry.redhat.io
