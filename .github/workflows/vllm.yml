@@ -1,0 +1,33 @@
+name: vllm
+on:
+  push:
+jobs:
+  vllm:
+    runs-on: ubuntu-24.04-arm
+    container:
+      image: docker.io/rockylinux/rockylinux:9.4
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: mozilla-actions/sccache-action@v0.0.9
+      - run: |
+          dnf install -y 'dnf-command(config-manager)'
+          dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/sbsa/cuda-rhel9.repo
+          dnf install -y git-core python3 python3-devel numactl-devel cuda-toolkit-12-6
+
+          git clone https://github.com/vllm-project/vllm.git
+          cd vllm
+
+          uv venv
+          python3 use_existing_torch.py
+          uv pip install --torch-backend cu126 torch torchvision torchaudio
+          uv pip install -r requirements/build.txt
+
+          export MAX_JOBS=2
+          export NVCC_THREADS=1
+          export DG_JIT_USE_NVRTC=1
+          export TORCH_CUDA_ARCH_LIST="8.7"
+          export CCACHE_NOHASHDIR="true"
+          uv pip install --no-build-isolation --verbose -e .
