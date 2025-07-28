@@ -26,6 +26,7 @@ python3 use_existing_torch.py
 uv pip install --torch-backend cu126 torch torchvision torchaudio
 uv pip install -r requirements/build.txt
 
-export MAX_JOBS=$(nproc)
+export MAX_JOBS=$(($(nproc) * 2))
+export NVCC_THREADS=2
 uv pip install --no-build-isolation --verbose -e .
 EOF
