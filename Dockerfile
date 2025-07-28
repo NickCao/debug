@@ -19,7 +19,7 @@ git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
 uv venv
-uv run python use_existing_torch.py
+python use_existing_torch.py
 uv pip install --torch-backend cu126 torch torchvision torchaudio
 uv pip install -r requirements/build.txt
 uv pip install --no-build-isolation -e .
