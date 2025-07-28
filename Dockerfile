@@ -25,5 +25,7 @@ uv venv
 python3 use_existing_torch.py
 uv pip install --torch-backend cu126 torch torchvision torchaudio
 uv pip install -r requirements/build.txt
+
+export MAX_JOBS=$(nproc)
 uv pip install --no-build-isolation --verbose -e .
 EOF
