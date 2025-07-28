@@ -21,6 +21,7 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           curl -L https://github.com/mozilla/sccache/releases/download/v0.10.0/sccache-v0.10.0-aarch64-unknown-linux-musl.tar.gz | tar xzf -
           export PATH=$PWD/sccache-v0.10.0-aarch64-unknown-linux-musl:$PATH
+          source $HOME/.local/bin/env
 
           dnf install -y 'dnf-command(config-manager)'
           dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/sbsa/cuda-rhel9.repo
