@@ -9,6 +9,12 @@ dnf clean all
 EOF
 
 RUN <<EOF
+dnf config-manager --add-repo https://repo.download.nvidia.com/jetson/rhel-9.4/jp6.1/nvidia-l4t.repo
+dnf install -y nvidia-jetpack-all
+dnf clean all
+EOF
+
+RUN <<EOF
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
