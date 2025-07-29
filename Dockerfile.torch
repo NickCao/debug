@@ -11,7 +11,7 @@ EOF
 
 RUN <<EOF
 set -e
-export UV_PYTHON=$(which python3.11)
+export UV_PYTHON=/usr/bin/python3.11
 export VIRTUAL_ENV=/opt/torch
 
 uv venv
