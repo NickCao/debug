@@ -25,7 +25,7 @@ export UV_PYTHON=python3.11
 
 uv venv
 python3 use_existing_torch.py
-uv pip install --torch-backend cu128 torch torchvision torchaudio
+uv pip install --torch-backend cu128 torch torchvision torchaudio pytorch-triton
 uv pip install -r requirements/build.txt
 
 export MAX_JOBS=2
