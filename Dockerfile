@@ -18,6 +18,13 @@ EOF
 
 RUN <<EOF
 set -e
+dnf config-manager --set-enabled crb
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+dnf install -y ccache
+EOF
+
+RUN <<EOF
+set -e
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
