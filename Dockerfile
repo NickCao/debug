@@ -25,6 +25,9 @@ EOF
 
 RUN --mount=type=cache,target=/root/.cache/ccache <<EOF
 set -e
+ln -sf /usr/bin/python3.11 /usr/bin/python
+ln -sf /usr/bin/python3.11 /usr/bin/python3
+
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
