@@ -11,5 +11,7 @@ RUN <<EOF
 set -e
 export UV_PYTHON=/usr/bin/python3.11
 uv venv
-uv pip install torch torchvision torchaudio pytorch-triton --index-url https://download.pytorch.org/whl/nightly/cu129
+uv pip install --pre \
+  torch torchvision torchaudio pytorch-triton \
+  --index-url https://download.pytorch.org/whl/nightly/cu129
 EOF
