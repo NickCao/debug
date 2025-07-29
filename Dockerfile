@@ -5,7 +5,7 @@ RUN <<EOF
 set -e
 dnf install -y 'dnf-command(config-manager)'
 dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/sbsa/cuda-rhel9.repo
-dnf install -y git-core python3 python3-devel numactl-devel cuda-toolkit-12-8
+dnf install -y git-core python3.11 python3.11-devel numactl-devel cuda-toolkit-12-8
 dnf clean all
 EOF
 
@@ -21,10 +21,10 @@ set -e
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
-export UV_PYTHON=python3.11
+export UV_PYTHON=$(which python3.11)
 
 uv venv
-python3 use_existing_torch.py
+python3.11 use_existing_torch.py
 uv pip install --torch-backend cu128 torch torchvision torchaudio pytorch-triton
 uv pip install -r requirements/build.txt
 
