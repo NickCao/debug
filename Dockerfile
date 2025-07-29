@@ -32,5 +32,6 @@ export MAX_JOBS=2
 export NVCC_THREADS=1
 export DG_JIT_USE_NVRTC=1
 export TORCH_CUDA_ARCH_LIST="8.7"
+export VLLM_TARGET_DEVICE=cuda
 uv pip install --no-build-isolation --verbose -e .
 EOF
