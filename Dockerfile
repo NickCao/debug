@@ -23,7 +23,7 @@ dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarc
 dnf install -y ccache
 EOF
 
-RUN <<EOF
+RUN --mount=type=cache,target=/root/.cache/ccache <<EOF
 set -e
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
@@ -41,5 +41,7 @@ export NVCC_THREADS=1
 export DG_JIT_USE_NVRTC=1
 export TORCH_CUDA_ARCH_LIST="8.7"
 export VLLM_TARGET_DEVICE=cuda
+export CCACHE_DIR=/root/.cache/ccache
+export CCACHE_NOHASHDIR="true"
 uv pip install --no-build-isolation --verbose -e .
 EOF
