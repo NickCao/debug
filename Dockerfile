@@ -22,10 +22,11 @@ git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
 export UV_PYTHON=$(which python3.11)
+export UV_TORCH_BACKEND=cu128
 
 uv venv
 python3.11 use_existing_torch.py
-uv pip install --torch-backend cu128 torch torchvision torchaudio pytorch-triton
+uv pip install torch torchvision torchaudio pytorch-triton --index-url https://download.pytorch.org/whl/cu128
 uv pip install -r requirements/build.txt
 
 export MAX_JOBS=2
