@@ -21,6 +21,8 @@ set -e
 git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
+export UV_PYTHON=python3.11
+
 uv venv
 python3 use_existing_torch.py
 uv pip install --torch-backend cu126 torch torchvision torchaudio
