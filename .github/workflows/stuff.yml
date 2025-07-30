@@ -1,0 +1,49 @@
+name: torch-jetson
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  torch:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: NickCao/pytorch
+          ref: v2.7.1-jetson
+          fetch-depth: 0
+          submodules: recursive
+          path: pytorch
+      - run: |
+          mkdir -p artifacts/
+
+          docker run \
+            --name builder \
+            -e BINARY_ENV_FILE=/tmp/env \
+            -e BUILD_ENVIRONMENT=linux-aarch64-binary-manywheel \
+            -e DESIRED_CUDA=cu128 \
+            -e DESIRED_DEVTOOLSET=cxx11-abi \
+            -e DESIRED_PYTHON=3.11 \
+            -e GPU_ARCH_TYPE=cuda-aarch64 \
+            -e GPU_ARCH_VERSION=12.8-aarch64 \
+            -e PACKAGE_TYPE=manywheel \
+            -e PYTORCH_FINAL_PACKAGE_DIR=/artifacts \
+            -e PYTORCH_ROOT=/pytorch \
+            -e SKIP_ALL_TESTS=1 \
+            -e USE_SPLIT_BUILD=False \
+            --tty \
+            --detach \
+            -v "$GITHUB_WORKSPACE/pytorch:/pytorch" \
+            -v "./artifacts:/artifacts" \
+            -w / \
+            pytorch/manylinuxaarch64-builder:cuda12.8-2.7
+
+          docker exec \
+            -t \
+            -w /pytorch \
+            builder \
+            bash -c "bash .circleci/scripts/binary_populate_env.sh"
+
+          docker exec \
+            -t \
+            builder \
+            bash -c "source /tmp/env && bash /pytorch/.ci/aarch64_linux/aarch64_ci_build.sh"
