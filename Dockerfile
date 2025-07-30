@@ -8,11 +8,11 @@ git clone https://github.com/vllm-project/vllm.git
 cd vllm
 
 python3 use_existing_torch.py
-uv pip install --system -r requirements/build.txt
+uv pip install --system --break-system-packages -r requirements/build.txt
 
 export MAX_JOBS=2
 export NVCC_THREADS=1
 export TORCH_CUDA_ARCH_LIST="8.7"
 export VLLM_TARGET_DEVICE=cuda
-uv pip install --system --no-build-isolation --verbose -e .
+uv pip install --system --break-system-packages --no-build-isolation --verbose -e .
 EOF
