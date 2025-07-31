@@ -22,8 +22,7 @@ export UV_PYTHON=$(which python3.11)
 
 uv venv
 python3.11 use_existing_torch.py
-uv pip install /wheels/torch/wheels/*.whl
-uv pip install torchvision torchaudio \
+uv pip install /wheels/torch/wheels/*.whl torchvision torchaudio \
   --index-url https://download.pytorch.org/whl/cu128
 uv pip install -r requirements/build.txt
 
