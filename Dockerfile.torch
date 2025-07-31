@@ -1,17 +1,20 @@
-FROM docker.io/rockylinux/rockylinux:9.4
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
+FROM pytorch/manylinuxaarch64-builder:cuda12.8-2.7
+ENV BINARY_ENV_FILE=/tmp/env \
+    BUILD_ENVIRONMENT=linux-aarch64-binary-manywheel \
+    DESIRED_CUDA=cu128 \
+    DESIRED_DEVTOOLSET=cxx11-abi \
+    DESIRED_PYTHON=3.11 \
+    GPU_ARCH_TYPE=cuda-aarch64 \
+    GPU_ARCH_VERSION=12.8-aarch64 \
+    PACKAGE_TYPE=manywheel \
+    PYTORCH_FINAL_PACKAGE_DIR=/artifacts \
+    PYTORCH_ROOT=/pytorch \
+    SKIP_ALL_TESTS=1 \
+    USE_SPLIT_BUILD=False
 RUN <<EOF
-set -e
-dnf install -y python3.11
-dnf clean all
-EOF
-
-RUN <<EOF
-set -e
-export UV_PYTHON=/usr/bin/python3.11
-uv venv
-uv pip install --pre \
-  torch torchvision torchaudio pytorch-triton \
-  --index-url https://download.pytorch.org/whl/nightly/cu129
+set -euxo pipefail
+mkdir -p /artifacts
+git clone --branch v2.7.1-jetson --depth 1 --recurse-submodules https://github.com/NickCao/pytorch.git /pytorch
+(cd /pytorch && bash .circleci/scripts/binary_populate_env.sh)
+(cd / && source /tmp/env && bash /pytorch/.ci/aarch64_linux/aarch64_ci_build.sh)
 EOF
