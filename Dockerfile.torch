@@ -1,4 +1,4 @@
-FROM pytorch/manylinuxaarch64-builder:cuda12.8-2.7
+FROM docker.io/pytorch/manylinuxaarch64-builder:cuda12.8-2.7 AS build
 ENV BINARY_ENV_FILE=/tmp/env \
     BUILD_ENVIRONMENT=linux-aarch64-binary-manywheel \
     DESIRED_CUDA=cu128 \
@@ -18,3 +18,6 @@ git clone --branch v2.7.1-jetson --depth 1 --recurse-submodules https://github.c
 (cd /pytorch && bash .circleci/scripts/binary_populate_env.sh)
 (cd / && source /tmp/env && bash /pytorch/.ci/aarch64_linux/aarch64_ci_build.sh)
 EOF
+
+FROM scratch
+COPY --from=build /artifacts /wheels
