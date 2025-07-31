@@ -1,0 +1,7 @@
+FROM quay.io/redhat-user-workloads/octo-edge-tenant/jetson-wheels-torch-lib:acbd919ebd35d59b59a4b05ea0445225134d0add AS torch-lib
+FROM ghcr.io/nickcao/debug/vllm:master
+COPY --from=torch-lib /lib /vllm/lib
+WORKDIR /vllm
+RUN dnf config-manager --enable crb && dnf install -y ninja-build && dnf clean all
+RUN uv pip install pytorch-triton --index-url https://download.pytorch.org/whl/cu128
+ENV LD_LIBRARY_PATH=/vllm/lib
