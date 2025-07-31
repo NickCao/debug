@@ -1,10 +1,12 @@
 FROM docker.io/library/ubuntu:22.04 AS build
-RUN <<EOF
+RUN bash <<EOF
 set -euxo pipefail
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/arm64/cuda-keyring_1.1-1_all.deb
+apt-get update
+apt-get -y install curl
+curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/arm64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
 apt-get update
-apt-get -y install cuda-toolkit-12-9 cuda-compat-12-9
+apt-get -y install cuda-toolkit-12-9
 EOF
 # Reference: .ci/aarch64_linux/aarch64_wheel_ci_build.py
 FROM scratch
