@@ -1,0 +1,43 @@
+FROM docker.io/library/ubuntu:22.04 AS build
+RUN <<EOF
+set -euxo pipefail
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/arm64/cuda-keyring_1.1-1_all.deb
+dpkg -i cuda-keyring_1.1-1_all.deb
+apt-get update
+apt-get -y install cuda-toolkit-12-9 cuda-compat-12-9
+EOF
+# Reference: .ci/aarch64_linux/aarch64_wheel_ci_build.py
+FROM scratch
+COPY --from=build \
+  /usr/local/cuda/extras/CUPTI/lib64/libcupti.so.12 \
+  /usr/local/cuda/lib64/libcudnn.so.9 \
+  /usr/local/cuda/lib64/libcublas.so.12 \
+  /usr/local/cuda/lib64/libcublasLt.so.12 \
+  /usr/local/cuda/lib64/libcudart.so.12 \
+  /usr/local/cuda/lib64/libcufft.so.11 \
+  /usr/local/cuda/lib64/libcusparse.so.12 \
+  /usr/local/cuda/lib64/libcusparseLt.so.0 \
+  /usr/local/cuda/lib64/libcusolver.so.11 \
+  /usr/local/cuda/lib64/libcurand.so.10 \
+  /usr/local/cuda/lib64/libnvToolsExt.so.1 \
+  /usr/local/cuda/lib64/libnvJitLink.so.12 \
+  /usr/local/cuda/lib64/libnvrtc.so.12 \
+  /usr/local/cuda/lib64/libcudnn_adv.so.9 \
+  /usr/local/cuda/lib64/libcudnn_cnn.so.9 \
+  /usr/local/cuda/lib64/libcudnn_graph.so.9 \
+  /usr/local/cuda/lib64/libcudnn_ops.so.9 \
+  /usr/local/cuda/lib64/libcudnn_engines_runtime_compiled.so.9 \
+  /usr/local/cuda/lib64/libcudnn_engines_precompiled.so.9 \
+  /usr/local/cuda/lib64/libcudnn_heuristic.so.9 \
+  /lib64/libgomp.so.1 \
+  /usr/lib64/libgfortran.so.5 \
+  /acl/build/libarm_compute.so \
+  /acl/build/libarm_compute_graph.so \
+  /usr/local/lib/libnvpl_lapack_lp64_gomp.so.0 \
+  /usr/local/lib/libnvpl_blas_lp64_gomp.so.0 \
+  /usr/local/lib/libnvpl_lapack_core.so.0 \
+  /usr/local/lib/libnvpl_blas_core.so.0 \
+  /usr/local/cuda/lib64/libnvrtc-builtins.so.12.8 \
+  /usr/local/cuda/lib64/libcufile.so.0 \
+  /usr/local/cuda/lib64/libcufile_rdma.so.1 \
+  /lib
