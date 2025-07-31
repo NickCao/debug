@@ -1,6 +1,6 @@
 FROM quay.io/ncao/wheels:torch AS torch
 FROM docker.io/pytorch/manylinuxaarch64-builder:cuda12.8-2.7 AS build
-RUN dnf install -y numactl-devel && dnf clean all
+RUN cp /etc/ld.so.cache{,bak} && dnf install -y numactl-devel && cp /etc/ld.so.cache{bak,} && dnf clean all
 
 RUN --mount=from=torch,target=/mnt/torch <<EOF
 set -euxo pipefail
